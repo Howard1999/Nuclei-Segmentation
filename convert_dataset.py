@@ -34,7 +34,7 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
         'images': [],
         "annotations": [],
         "categories": [{
-            'id': 1,
+            'id': 0,
             'name': 'cell'
         }]
     }
@@ -42,7 +42,7 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
         'images': [],
         "annotations": [],
         "categories": [{
-            'id': 1,
+            'id': 0,
             'name': 'cell'
         }]
     }
@@ -59,7 +59,7 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
         if grayscale:
             img = image_handle.grayscale(img)
 
-        if i < val_size:
+        if i > 24-val_size-1:
             coco = coco_val
             cv2.imwrite(val_dst_dir + '/' + img_name + '.png', img)
         else:
@@ -77,11 +77,11 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
             annotation = {
                 "id": len(coco['annotations']),
                 "image_id": i,
-                "category_id": 1,
+                "category_id": 0,
                 "segmentation": rle,
                 "area": COCO.maskUtils.area(rle).item(),
                 "bbox": COCO.maskUtils.toBbox(rle).tolist(),
-                "iscrowd": 1,
+                "iscrowd": 0,
             }
             coco['annotations'].append(annotation)
 
