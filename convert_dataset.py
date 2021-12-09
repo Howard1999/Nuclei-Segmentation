@@ -4,7 +4,6 @@ import numpy as np
 import json
 import image_handle
 from pycocotools import coco as COCO
-from shutil import copyfile
 
 
 def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
@@ -85,6 +84,14 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
             }
             coco['annotations'].append(annotation)
 
+    coco_test = {
+        "images": [],
+        "categories": [{
+            "id": 0,
+            "name": "cell"
+        }],
+        "annotations": []
+    }
     # test set
     for img_name in os.listdir(test_dir):
         img = cv2.imread(test_dir + '/' + img_name)
@@ -97,7 +104,10 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
         cv2.imwrite(test_dst_dir + '/' + img_name, img)
 
     # annotation files
-    copyfile(from_dir + '/test_img_ids.json', to_dir + '/test.json')
+    with open(to_dir + 'test.json', 'w') as fp:
+        with open(from_dir + '/test_img_ids.json') as test_fp:
+            coco_test['images'] = json.load(test_fp)
+        fp.write(json.dumps(coco_test, sort_keys=True, indent=4))
     with open(to_dir + 'train.json', 'w') as fp:
         fp.write(json.dumps(coco_train, sort_keys=True, indent=4))
     with open(to_dir + 'val.json', 'w') as fp:
