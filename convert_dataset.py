@@ -34,7 +34,10 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
         "annotations": [],
         "categories": [{
             'id': 0,
-            'name': 'cell'
+            'name': 'background'
+        }, {
+            'id': 1,
+            'name': 'nuclei'
         }]
     }
     coco_val = {
@@ -42,7 +45,10 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
         "annotations": [],
         "categories": [{
             'id': 0,
-            'name': 'cell'
+            'name': 'background'
+        }, {
+            'id': 1,
+            'name': 'nuclei'
         }]
     }
     train_list = os.listdir(train_dir)
@@ -76,7 +82,7 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
             annotation = {
                 "id": len(coco['annotations']),
                 "image_id": i,
-                "category_id": 0,
+                "category_id": 1,
                 "segmentation": rle,
                 "area": COCO.maskUtils.area(rle).item(),
                 "bbox": COCO.maskUtils.toBbox(rle).tolist(),
@@ -87,8 +93,11 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
     coco_test = {
         "images": [],
         "categories": [{
-            "id": 0,
-            "name": "cell"
+            'id': 0,
+            'name': 'background'
+        }, {
+            'id': 1,
+            'name': 'nuclei'
         }],
         "annotations": []
     }
@@ -116,5 +125,5 @@ def convert2coco(from_dir, to_dir, unsharp=True, grayscale=False):
 
 if __name__ == '__main__':
     convert2coco('../dataset/', '../coco/normal/', unsharp=False, grayscale=False)
-    convert2coco('../dataset/', '../coco/unsharp/', unsharp=True, grayscale=False)
-    convert2coco('../dataset/', '../coco/unsharp_and_grayscale/', unsharp=True, grayscale=True)
+    # convert2coco('../dataset/', '../coco/unsharp/', unsharp=True, grayscale=False)
+    # convert2coco('../dataset/', '../coco/unsharp_and_grayscale/', unsharp=True, grayscale=True)
