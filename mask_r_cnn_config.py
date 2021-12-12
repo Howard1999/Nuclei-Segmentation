@@ -1,5 +1,5 @@
 # The new config inherits a base config to highlight the necessary modification
-_base_ = '/mmdetection/configs/mask_rcnn/mask_rcnn_r50_fpn_1x_coco.py'
+_base_ = 'mmdetection/configs/mask_rcnn/mask_rcnn_r50_fpn_1x_coco.py'
 
 # We also need to change the num_classes in head to match the dataset's annotation
 model = dict(
@@ -35,7 +35,7 @@ model = dict(
             mask_thr_binary=0.5)))
 
 # Modify dataset related settings
-dataset_dir = '/mnt/coco/unsharp/'
+dataset_dir = '../../coco/unsharp/'
 dataset_type = 'CocoDataset'
 classes = ('background','nuclei')
 data = dict(
